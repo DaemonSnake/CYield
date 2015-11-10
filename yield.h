@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Tue Nov 10 04:28:17 2015 bastien penavayre
-** Last update Tue Nov 10 19:15:25 2015 bastien penavayre
+** Last update Tue Nov 10 23:10:02 2015 bastien penavayre
 */
 
 #pragma once
@@ -33,15 +33,21 @@ void		__yield__exit_error();
 __yield__init_label:							\
  if (this->funcId == NULL) {						\
    reset_generator(this, &&__yield__init_label);			\
+   __yield_save_stack(this, rsp, rbp);					\
+   this->isNotEmpty = 42;						\
    return ;								\
  }									\
  if (this->funcId != &&__yield__init_label)				\
    __yield__exit_error();						\
+ __yield__pop_stack_back(this, rsp);					\
+ this->isNotEmpty = 0;							\
  if (this->label != NULL)						\
    goto *this->label;
 
+#define HASH(x, y) x ## y
+
 #define newLabel(line)				\
-  __yield__ ## line
+  HASH(__yield__, line)
 
 #define LabelSymb(label) label :
 
@@ -49,15 +55,13 @@ __yield__init_label:							\
   return (__yield_save_stack(this, rsp, rbp),				\
 	  this->label = &&newLabel(__LINE__),				\
 	  this->isNotEmpty = 42,					\
-	  val);								\
+	  (val));							\
   LabelSymb(newLabel(__LINE__));					\
-  (__yield__pop_stack_back(this, rsp),					\
-   this->label = NULL,							\
-   this->isNotEmpty = 0);
+  this->label = NULL;
 
-#define newGen(gen, func, args...)					\
-  (void)((gen)->buff = NULL, (gen)->size = 0, (gen)->label = NULL,	\
-	 (gen)->isNotEmpty = 42, (gen)->func = func, (gen)->funcId = NULL, \
-	 func(gen, ##args))
+#define newGen(gen, f, args...)						\
+  (void)((gen)->buff = NULL, (gen)->isNotEmpty = 42,			\
+	 (gen)->func = f, (gen)->funcId = NULL,				\
+	 f(gen, ##args))
 
 #define popNew(type, gen) (((type(*)(Generator*, ...))(gen)->func)(gen))

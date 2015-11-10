@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Tue Nov 10 04:57:18 2015 bastien penavayre
-** Last update Tue Nov 10 19:19:42 2015 bastien penavayre
+** Last update Tue Nov 10 23:06:18 2015 bastien penavayre
 */
 
 #include <stdio.h>
@@ -29,6 +29,17 @@ int		func(Generator *this)
   return f;
 }
 
+int		whileTest(Generator *this, int start, int end)
+{
+  int		i;
+
+  init_yield();
+  for (i = start; i < end; i++)
+    {
+      yield(i);
+    }
+}
+
 int		main(void)
 {
   Generator	tmp;
@@ -39,4 +50,9 @@ int		main(void)
   while (tmp.isNotEmpty)
     res[i++] = popNew(int, &tmp);
   printf("results : {%d} {%d}\n", res[0], res[1]);
+  reset_generator(&tmp, NULL);
+
+  newGen(&tmp, whileTest, 2, 7);
+  while (tmp.isNotEmpty)
+    printf("%d\n", popNew(int, &tmp));
 }

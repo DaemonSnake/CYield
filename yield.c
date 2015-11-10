@@ -42,4 +42,6 @@ void		reset_generator(Generator *this, void *addr)
   this->label = NULL;
   this->isNotEmpty = 42;
   this->funcId = addr;
+  if (addr == NULL)
+    this->func = NULL;
 }
