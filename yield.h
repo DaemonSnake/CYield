@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Tue Nov 10 04:28:17 2015 bastien penavayre
-** Last update Tue Nov 10 23:10:02 2015 bastien penavayre
+** Last update Thu Nov 12 11:23:56 2015 bastien penavayre
 */
 
 #pragma once
@@ -22,6 +22,10 @@ typedef		struct
   void		*funcId;
 }		Generator;
 
+// required by the fact that Gcc doesn't detect the
+// push back on the stack
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+
 void		__yield_save_stack(Generator *, const char *, const char *);
 void		__yield__pop_stack_back(Generator *, const char *);
 void		reset_generator(Generator *, void *);
@@ -35,7 +39,10 @@ __yield__init_label:							\
    reset_generator(this, &&__yield__init_label);			\
    __yield_save_stack(this, rsp, rbp);					\
    this->isNotEmpty = 42;						\
+   _Pragma("GCC diagnostic push");					\
+   _Pragma("GCC diagnostic ignored \"-Wreturn-type\"");			\
    return ;								\
+   _Pragma("GCC diagnostic pop");					\
  }									\
  if (this->funcId != &&__yield__init_label)				\
    __yield__exit_error();						\

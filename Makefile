@@ -5,7 +5,7 @@
 ## Login   <penava_b@epitech.net>
 ## 
 ## Started on  Tue Nov 10 04:57:55 2015 bastien penavayre
-## Last update Tue Nov 10 22:24:02 2015 bastien penavayre
+## Last update Wed Nov 11 03:19:20 2015 bastien penavayre
 ##
 
 SRC 	= main.c	\
@@ -15,12 +15,12 @@ OBJ	= $(SRC:.c=.o)
 
 NAME	= test
 
-CFLAGS = -g3
+CFLAGS = -W -Wall -Wextra
 
 all:	$(NAME)
 
 $(NAME): $(OBJ) yield.h
-	gcc -o $(NAME) $(OBJ) -W -Wall -Wextra -Werror -g3
+	gcc -o $(NAME) $(OBJ) -W -Wall -Wextra -Werror
 
 clean:
 	rm -f $(OBJ)
