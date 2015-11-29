@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 **
 ** Started on  Sat Nov 28 02:32:38 2015 penava_b
-** Last update Sun Nov 29 03:00:08 2015 penava_b
+** Last update Sun Nov 29 19:49:34 2015 penava_b
 */
 
 #include <stdlib.h>
@@ -13,6 +13,8 @@
 
 int		__fake_setjmp(Generator *this)
 {
+  if (this == NULL)
+    return -1;
   this->label = __builtin_return_address(0);
   return 0;
 }
@@ -21,6 +23,8 @@ void		__yield_save_context(Generator *this, const char *rsp, const char *rbp)
 {
   size_t       	i;
 
+  if (this == NULL || rsp == NULL || rbp == NULL)
+    return ;
   if (this->size != 0)
     free(this->stack);
   this->stack = NULL;
@@ -36,13 +40,18 @@ void		__yield_push_back(Generator *this, const char *rsp)
 {
   size_t       	i;
 
-  if (this->stack == 0)
+  if (this == NULL || this->stack == NULL || rsp == NULL)
     return ;
   for (i = 0; i < this->size; i++)
     ((char *)rsp)[i] = this->stack[i];
   free(this->stack);
   this->stack = 0;
   this->size = 0;
+}
+
+void		*__yield_return_value(void *arg)
+{
+  return arg;
 }
 
 __asm(".globl __yield_editRet\n\t"
