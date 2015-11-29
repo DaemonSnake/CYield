@@ -1,31 +1,37 @@
 ##
-## Makefile for  in /home/penava_b/perso/test
+## Makefile for  in /home/penava_b/perso/test/CYield
 ## 
-## Made by bastien penavayre
+## Made by penava_b
 ## Login   <penava_b@epitech.net>
 ## 
-## Started on  Tue Nov 10 04:57:55 2015 bastien penavayre
-## Last update Wed Nov 11 03:19:20 2015 bastien penavayre
+## Started on  Sun Nov 29 02:55:46 2015 penava_b
+## Last update Sun Nov 29 02:58:26 2015 penava_b
 ##
 
-SRC 	= main.c	\
-	yield.c
+CC =		gcc
 
-OBJ	= $(SRC:.c=.o)
+RM =		rm -f
 
-NAME	= test
+NAME =		libYield.so
 
-CFLAGS = -W -Wall -Wextra
+SRC =		yield.c
 
-all:	$(NAME)
+OBJ =		$(SRC:.c=.o)
 
-$(NAME): $(OBJ) yield.h
-	gcc -o $(NAME) $(OBJ) -W -Wall -Wextra -Werror
+COMMON =	-W -Wall -Werror -Wextra
 
+CFLAGS =	$(COMMON) -fPIC -I inc/
+
+LDFLAGS =	$(COMMON) -shared
+
+all: 		$(NAME)
+
+$(NAME): 	$(OBJ)
+		$(CC) $(OBJ) -o $(NAME) $(LDFLAGS)
 clean:
-	rm -f $(OBJ)
+		$(RM) $(OBJ)
 
-fclean:	clean
-	rm -f $(NAME)
+fclean: 	clean
+		$(RM) $(NAME)
 
-re: fclean all
+re: 		fclean all
