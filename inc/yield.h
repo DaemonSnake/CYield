@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Sun Nov 29 02:28:03 2015 penava_b
-** Last update Mon Nov 30 11:15:32 2015 penava_b
+** Last update Mon Nov 30 11:55:44 2015 penava_b
 */
 
 #pragma once
@@ -28,6 +28,7 @@ void		__yield_save_context(Generator *, const char *, const char *);
 int		__fake_setjmp(Generator *);
 char		__yield_continue(Generator *);
 Generator	*__yield_init(Generator *, void *);
+void		__yield_clean_up(Generator *);
 
 #define initYield()						\
   if (this != NULL && this->label != NULL)			\
@@ -67,4 +68,6 @@ Generator	*__yield_init(Generator *, void *);
 #define for_yield(x, Func, ret, args...)				\
   for (ret = Func(__yield_init(x, Func), args);				\
        __yield_continue(x);						\
-       ret = ((__typeof__(ret)(*)(Generator *,...))(((Generator *)x)->func))((x)))
+       ret = ((__typeof__(ret)(*)(Generator *,...))(((Generator *)x)->func))(x))
+
+#define yield_interupt(x) if ((__yield_clean_up(x), 42))

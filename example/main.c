@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Sun Nov 29 02:32:09 2015 penava_b
-** Last update Mon Nov 30 11:12:01 2015 penava_b
+** Last update Mon Nov 30 12:01:14 2015 penava_b
 */
 
 #include <stdio.h>
@@ -28,11 +28,29 @@ int		main()
   Generator    	gen;
   int		val;
 
-  for_yield(&gen, func, val, 757)
+  // Default test
+  for_yield(&gen, func, val, 757) {
     printf("%d\n", val);
+  }
   printf("Return value is %d\n", val);
+
+  // NULL generator test
   for_yield(0, func, val, 757)
     printf("Unreachable code\n");
   printf("Return value is %d\n", val);
+
+  // Leak test break
+  for_yield(&gen, func, val, 757)
+    {
+      if (val == 6)
+	yield_interupt(&gen) break;
+    }
+
+  // Leak test return
+  for_yield(&gen, func, val, 757)
+    {
+      if (val == 6)
+	yield_interupt(&gen) return 5;
+    }
   return 0;
 }
