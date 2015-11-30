@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 **
 ** Started on  Sat Nov 28 02:32:38 2015 penava_b
-** Last update Sun Nov 29 19:49:34 2015 penava_b
+** Last update Mon Nov 30 11:10:03 2015 penava_b
 */
 
 #include <stdlib.h>
@@ -49,16 +49,29 @@ void		__yield_push_back(Generator *this, const char *rsp)
   this->size = 0;
 }
 
-void		*__yield_return_value(void *arg)
-{
-  return arg;
-}
-
 __asm(".globl __yield_editRet\n\t"
       ".type __yield_editRet, @function\n\t"
       "__yield_editRet:\n\t"
       "push %rbp\n\t"
       "mov %rsp,%rbp\n\t"
-      "pop %rbp\n\t"
       "mov $0x42, %eax\n\t"
+      "pop %rbp\n\t"
       "retq");
+
+Generator	*__yield_init(Generator *this, void *func)
+{
+  if (this == NULL)
+    return this;
+  this->label = 0;
+  this->func = func;
+  this->size = 0;
+  this->stack = 0;
+  this->alive = 42;
+  this->init = 0;
+  return this;
+}
+
+char		__yield_continue(Generator *this)
+{
+  return (this != 0 && this->label != 0 && this->alive);
+}

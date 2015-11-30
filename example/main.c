@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Sun Nov 29 02:32:09 2015 penava_b
-** Last update Sun Nov 29 19:49:46 2015 penava_b
+** Last update Mon Nov 30 11:12:01 2015 penava_b
 */
 
 #include <stdio.h>
@@ -31,7 +31,6 @@ int		main()
   for_yield(&gen, func, val, 757)
     printf("%d\n", val);
   printf("Return value is %d\n", val);
-
   for_yield(0, func, val, 757)
     printf("Unreachable code\n");
   printf("Return value is %d\n", val);
