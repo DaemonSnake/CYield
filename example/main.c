@@ -5,10 +5,11 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Sun Nov 29 02:32:09 2015 penava_b
-** Last update Mon Nov 30 12:01:14 2015 penava_b
+** Last update Mon Nov 30 13:43:00 2015 penava_b
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "yield.h"
 
 int		func(Generator *this, int val)
@@ -34,23 +35,31 @@ int		main()
   }
   printf("Return value is %d\n", val);
 
+  printf("\n");
+
   // NULL generator test
   for_yield(0, func, val, 757)
     printf("Unreachable code\n");
   printf("Return value is %d\n", val);
 
+  printf("\n");
+
   // Leak test break
   for_yield(&gen, func, val, 757)
     {
+      printf("%d\n", val);      
       if (val == 6)
 	yield_interupt(&gen) break;
     }
 
-  // Leak test return
+  printf("\n");
+
+  // Leak test exit
   for_yield(&gen, func, val, 757)
     {
+      printf("%d\n", val);
       if (val == 6)
-	yield_interupt(&gen) return 5;
+	yield_interupt(&gen) exit(5);
     }
   return 0;
 }

@@ -5,11 +5,20 @@
 ** Login   <penava_b@epitech.net>
 **
 ** Started on  Sat Nov 28 02:32:38 2015 penava_b
-** Last update Mon Nov 30 11:55:24 2015 penava_b
+** Last update Mon Nov 30 13:41:31 2015 penava_b
 */
 
 #include <stdlib.h>
-#include "yield.h"
+
+typedef		struct
+{
+  void		*label;
+  char		*stack;
+  void		*func;
+  char		alive;
+  char		init;
+  unsigned long	size;
+}		Generator;
 
 int		__fake_setjmp(Generator *this)
 {
@@ -49,14 +58,10 @@ void		__yield_push_back(Generator *this, const char *rsp)
   this->size = 0;
 }
 
-__asm(".globl __yield_editRet\n\t"
-      ".type __yield_editRet, @function\n\t"
-      "__yield_editRet:\n\t"
-      "push %rbp\n\t"
-      "mov %rsp,%rbp\n\t"
-      "mov $0x42, %eax\n\t"
-      "pop %rbp\n\t"
-      "retq");
+int		__yield_editRet(void)
+{
+  return 42;
+}
 
 Generator	*__yield_init(Generator *this, void *func)
 {
