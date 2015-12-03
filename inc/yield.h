@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Sun Nov 29 02:28:03 2015 penava_b
-** Last update Mon Nov 30 12:18:38 2015 penava_b
+** Last update Thu Dec  3 15:34:37 2015 penava_b
 */
 
 #pragma once
@@ -65,8 +65,8 @@ void		__yield_clean_up(Generator *);
 	}							\
     }
 
-#define for_yield(x, Func, ret, args...)				\
-  for (ret = Func(__yield_init(x, Func), args);				\
+#define for_yield(x, Func, ret, ...)					\
+  for (ret = Func(__yield_init(x, Func), ##__VA_ARGS__);		\
        __yield_continue(x);						\
        ret = ((__typeof__(ret)(*)(Generator *,...))(((Generator *)x)->func))(x))
 

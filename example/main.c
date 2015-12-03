@@ -5,7 +5,7 @@
 ** Login   <penava_b@epitech.net>
 ** 
 ** Started on  Sun Nov 29 02:32:09 2015 penava_b
-** Last update Mon Nov 30 13:43:00 2015 penava_b
+** Last update Thu Dec  3 15:47:36 2015 penava_b
 */
 
 #include <stdio.h>
@@ -24,6 +24,19 @@ int		func(Generator *this, int val)
   return (0XDEADB00B);
 }
 
+int		yieldYielder(Generator *this)
+{
+  Generator	gen;
+  int		val;
+  
+  initYield();
+  yield(0);
+  yield(103);
+  for_yield(&gen, func, val, 757)
+    yield(val);
+  return 0;
+}
+
 int		main()
 {
   Generator    	gen;
@@ -33,6 +46,7 @@ int		main()
   for_yield(&gen, func, val, 757) {
     printf("%d\n", val);
   }
+  
   printf("Return value is %d\n", val);
 
   printf("\n");
@@ -47,9 +61,9 @@ int		main()
   // Leak test break
   for_yield(&gen, func, val, 757)
     {
-      printf("%d\n", val);      
+      printf("%d\n", val);
       if (val == 6)
-	yield_interupt(&gen) break;
+  	yield_interupt(&gen) break;
     }
 
   printf("\n");
@@ -59,7 +73,13 @@ int		main()
     {
       printf("%d\n", val);
       if (val == 6)
-	yield_interupt(&gen) exit(5);
+  	yield_interupt(&gen) exit(5);
     }
+
+  printf("\n");
+
+  // yield in yield func
+  for_yield(&gen, yieldYielder, val)
+    printf("%d\n", val);
   return 0;
 }
