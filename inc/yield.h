@@ -37,21 +37,21 @@ generator *__yield_update_generator(generator *);
 int __yield_continue(void *);
 
 #if defined(__x86_64__)
-__attribute__((always_inline))
+__attribute__((always_inline, no_instrument_function))
 inline void __yield_fgoto(generator *gen)
 {
     __asm__("mov %0, %%rax":: "r"(gen->label));
     __asm__("jmpq *%rax");
 }
 #elif defined(__i386__)
-__attribute__((always_inline))
+__attribute__((always_inline, no_instrument_function))
 inline void __yield_fgoto(generator *gen)
 {
     __asm__("mov %0, %%eax":: "r"(gen->label));
     __asm__("jmp *%eax");
 }
 #elif defined(__arm__) //NEEDS TO BE CHECKED
-__attribute__((always_inline))
+__attribute__((always_inline, no_instrument_function))
 inline void __yield_fgoto(generator *gen)
 {
     __asm__("ldr r3, %0" :: "r"(gen->label));
