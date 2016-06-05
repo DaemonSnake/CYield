@@ -5,33 +5,31 @@
 ## Login   <penava_b@epitech.net>
 ## 
 ## Started on  Sun Nov 29 02:55:46 2015 penava_b
-## Last update Sun Nov 29 02:58:26 2015 penava_b
+## Last update Sun Jun  5 17:59:39 2016 penava_b
 ##
 
 CC =		gcc
-
 RM =		rm -f
-
-NAME =		libYield.so
-
-SRC =		yield.c
-
+SHARED =	libYield.so
+STATIC =	libYield.a
+SRC =		src/yield.c
 OBJ =		$(SRC:.c=.o)
-
 COMMON =	-W -Wall -Werror -Wextra
-
 CFLAGS =	$(COMMON) -fPIC -I inc/
-
 LDFLAGS =	$(COMMON) -shared
 
-all: 		$(NAME)
+all: 		$(SHARED)
 
-$(NAME): 	$(OBJ)
-		$(CC) $(OBJ) -o $(NAME) $(LDFLAGS)
+$(SHARED): 	$(OBJ)
+		$(CC) $(OBJ) -o $(SHARED) $(LDFLAGS)
+
+$(STATIC):	$(OBJ)
+		@ar -cq $@ $<
+
 clean:
 		$(RM) $(OBJ)
 
 fclean: 	clean
-		$(RM) $(NAME)
+		$(RM) $(SHARED) $(STATIC)
 
 re: 		fclean all

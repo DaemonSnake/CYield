@@ -1,85 +1,57 @@
 /*
-** main.c for  in /home/penava_b/perso/test/CYield
-** 
-** Made by penava_b
-** Login   <penava_b@epitech.net>
-** 
-** Started on  Sun Nov 29 02:32:09 2015 penava_b
-** Last update Thu Dec  3 15:47:36 2015 penava_b
-*/
+ * Copyright (C) 2015  Bastien Penavayre
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "yield.h"
+#include <stdio.h>
 
-int		func(Generator *this, int val)
+yields(int) range(int b, int e)
 {
-  int		i;
-
-  initYield();
-  yield(25);
-  printf("argument is still : %d\n", val);
-  for (i = 0; i < 5; i++)
-    yield(5 + i);
-  return (0XDEADB00B);
+    for (int i = b; i != e; i += (b < e ? 1 : -1))
+        yield(i);
+    yield_break(int);
 }
 
-int		yieldYielder(Generator *this)
+yields(int) squareRange(int b, int e)
 {
-  Generator	gen;
-  int		val;
-  
-  initYield();
-  yield(0);
-  yield(103);
-  for_yield(&gen, func, val, 757)
-    yield(val);
-  return 0;
+    for (int i = b; i != e; i += (b < e ? 1 : -1))
+    {
+        for_yield(ret, range(i, e))
+            yield(ret);
+        printf("\n");
+    }
+    yield_break(int);
 }
 
-int		main()
+int main()
 {
-  Generator    	gen;
-  int		val;
-
-  // Default test
-  for_yield(&gen, func, val, 757) {
-    printf("%d\n", val);
-  }
-  
-  printf("Return value is %d\n", val);
-
-  printf("\n");
-
-  // NULL generator test
-  for_yield(0, func, val, 757)
-    printf("Unreachable code\n");
-  printf("Return value is %d\n", val);
-
-  printf("\n");
-
-  // Leak test break
-  for_yield(&gen, func, val, 757)
-    {
-      printf("%d\n", val);
-      if (val == 6)
-  	yield_interupt(&gen) break;
+    for_yield(i, range(0, 5)) {
+        printf("%d\n", i);
     }
-
-  printf("\n");
-
-  // Leak test exit
-  for_yield(&gen, func, val, 757)
-    {
-      printf("%d\n", val);
-      if (val == 6)
-  	yield_interupt(&gen) exit(5);
+    printf("\n");
+    for_yield(i, range(5, 0)) {
+        printf("%d\n", i);
     }
-
-  printf("\n");
-
-  // yield in yield func
-  for_yield(&gen, yieldYielder, val)
-    printf("%d\n", val);
-  return 0;
+    printf("\n");
+    for_yield(i, squareRange(0, 2))
+        printf("%d\n", i);
+    return 0;
 }
