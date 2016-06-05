@@ -41,6 +41,12 @@ yields(int) squareRange(int b, int e)
     yield_break(int);
 }
 
+int badFunction()
+{
+    yield(0);
+    yield_break(int);
+}
+
 int main()
 {
     for_yield(i, range(0, 5)) {
