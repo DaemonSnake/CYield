@@ -32,8 +32,8 @@ typedef struct
 /* FUNCTIONS */
 int __yield_setjmp(void *, const char *);
 void __yield_postjump();
-generator *__yield_get_generator();
-generator *__yield_update_generator(generator *);
+void *__yield_fill_holder(void *, void *, void *);
+void __yield_update_holder(void *);
 int __yield_continue(void *);
 
 #if defined(__x86_64__)
@@ -58,17 +58,17 @@ inline void __yield_fgoto(generator *gen)
     __asm__("mov pc, r3");
 }
 #else
-# error "System not yet suported"
+# error "System not yet suported, feel free to send us a pull request"
 #endif
 
 /* MACROS */
 
 #define for_yield(ret, call)                                            \
     for (__typeof__(call) ** const __holder__ =                         \
-             (void *)((generator*[3]){__yield_get_generator(), __yield_update_generator(((generator[1]){{0, __builtin_return_address(0), 42}})), NULL}), \
-             ret =  call;                                         \
+             __yield_fill_holder((generator*[3]){0}, __builtin_return_address(0), (generator[1]){0}), \
+             ret =  call;                                               \
          __yield_continue(__holder__);                                  \
-         (__yield_update_generator((void *)__holder__[2]), __yield_fgoto((void *)__holder__[1])))
+         (__yield_update_holder(__holder__), __yield_fgoto((void *)__holder__[1])))
 
 #define yields(type) __attribute__((always_inline, no_instrument_function)) inline type
 

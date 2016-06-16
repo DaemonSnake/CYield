@@ -60,15 +60,21 @@ void __yield_postjump()
     __gen__->label = 0;
 }
 
-generator *__yield_get_generator()
+void *__yield_fill_holder(void *holder, void *id, void *new_gen)
 {
-    return __gen__;
+    ((generator**)holder)[0] = __gen__;
+    ((generator *)new_gen)->id = id;
+    ((generator *)new_gen)->label = 0;
+    ((generator *)new_gen)->stop = 42;
+    ((generator**)holder)[1] = new_gen;
+    __gen__ = new_gen;
+    ((generator**)holder)[2] = 0;
+    return holder;
 }
 
-generator *__yield_update_generator(generator *val)
+void __yield_update_holder(void *holder)
 {
-    __gen__ = val;
-    return __gen__;
+    __gen__ = ((generator**)holder)[2];
 }
 
 int __yield_continue(void *holder)
